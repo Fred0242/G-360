@@ -4,22 +4,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}G-360{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; }
+
+        /* Sidebar */
+        .sidebar { width: 64px; background: #0f1923; min-height: 100vh; }
+        .s-icon { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.35); font-size: 16px; cursor: pointer; position: relative; transition: all 0.15s; }
+        .s-icon:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.8); }
+        .s-icon.active { background: rgba(26,86,219,0.25); color: #4d8bff; }
+        .s-tooltip { position: absolute; left: 52px; background: #1e2d3d; color: white; font-size: 11px; padding: 5px 10px; border-radius: 5px; white-space: nowrap; opacity: 0; pointer-events: none; z-index: 100; border: 0.5px solid rgba(255,255,255,0.1); }
+        .s-icon:hover .s-tooltip { opacity: 1; }
+
+        /* Stat cards */
+        .stat-card { background: white; border-radius: 12px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 0 1px rgba(0,0,0,0.06); }
+
+        /* Panels */
+        .panel { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 0 1px rgba(0,0,0,0.06); }
+        .panel-row { display: flex; align-items: center; justify-content: space-between; padding: 9px 14px; border-bottom: 0.5px solid #f0f2f7; }
+        .panel-row:last-child { border-bottom: none; }
+
+        /* Badges */
+        .badge-green { background: #ecfdf5; color: #065f46; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+        .badge-red { background: #fef2f2; color: #991b1b; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+        .badge-amber { background: #fffbeb; color: #92400e; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+        .badge-blue { background: #eff6ff; color: #1e40af; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+
+        /* Topbar */
+        .topbar { background: white; height: 52px; border-bottom: 0.5px solid #e5e9f0; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+        .lang-pill { display: flex; background: #f4f6f9; border-radius: 6px; padding: 2px; border: 0.5px solid #e5e9f0; }
+        .lang-btn { font-size: 10px; padding: 3px 8px; border-radius: 4px; color: #8a94a6; cursor: pointer; font-weight: 500; text-decoration: none; }
+        .lang-btn.active { background: white; color: #1a56db; border: 0.5px solid #e5e9f0; }
+    </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
+<body>
+<div class="flex min-h-screen">
 
-    <nav class="bg-blue-800 text-white px-6 py-4 flex justify-between items-center shadow">
-        <h1 class="text-xl font-bold">🏢 G-360</h1>
-        <div class="flex gap-4 text-sm">
-            <a href="?lang=fr" class="hover:underline">FR</a>
-            <a href="?lang=wo" class="hover:underline">WO</a>
-            <a href="?lang=it" class="hover:underline">IT</a>
+    <!-- Sidebar iconique -->
+    <aside class="sidebar fixed top-0 left-0 h-screen flex flex-col items-center py-5 gap-2 z-20">
+
+        <!-- Logo -->
+        <div class="w-9 h-9 bg-blue-700 rounded-lg flex items-center justify-center text-white font-bold text-xs tracking-wider mb-4">G3</div>
+
+        <!-- Nav principale -->
+        <a href="{% url 'dashboard' %}" class="s-icon {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span class="s-tooltip">Tableau de bord</span>
+        </a>
+        <a href="{% url 'stock' %}" class="s-icon {% if request.resolver_match.url_name == 'stock' %}active{% endif %}">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            <span class="s-tooltip">Stock</span>
+        </a>
+        <a href="{% url 'ventes' %}" class="s-icon {% if request.resolver_match.url_name == 'ventes' %}active{% endif %}">
+            <i class="fa-solid fa-receipt"></i>
+            <span class="s-tooltip">Ventes & Factures</span>
+        </a>
+        <a href="{% url 'clients_liste' %}" class="s-icon {% if request.resolver_match.url_name == 'clients_liste' %}active{% endif %}">
+            <i class="fa-solid fa-users"></i>
+            <span class="s-tooltip">Clients</span>
+        </a>
+
+        <div class="w-6 h-px bg-white/10 my-2"></div>
+
+        <a href="{% url 'historique' %}" class="s-icon {% if request.resolver_match.url_name == 'historique' %}active{% endif %}">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span class="s-tooltip">Historique</span>
+        </a>
+        <a href="{% url 'support' %}" class="s-icon {% if request.resolver_match.url_name == 'support' %}active{% endif %}">
+            <i class="fa-solid fa-headset"></i>
+            <span class="s-tooltip">Support</span>
+        </a>
+
+        <!-- Avatar utilisateur -->
+        <div class="mt-auto w-8 h-8 rounded-full bg-blue-700 flex items-center justify-center text-white text-xs font-semibold">
+            {{ request.user.username|slice:":2"|upper }}
         </div>
-    </nav>
 
-    <main class="p-6">
-        {% block content %}{% endblock %}
-    </main>
+    </aside>
 
+    <!-- Contenu principal -->
+    <div class="ml-16 flex-1 flex flex-col">
+
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="flex items-center gap-3">
+                <span style="font-size:13px;font-weight:600;color:#1a1f2e;display:flex;align-items:center;gap:8px">
+                    <i class="{% block page_icon %}fa-solid fa-gauge-high{% endblock %}" style="color:#1a56db;font-size:14px"></i>
+                    {% block page_title %}Tableau de bord{% endblock %}
+                </span>
+                <span style="color:#e5e9f0">|</span>
+                <span style="font-size:11px;color:#8a94a6">{{ today }}</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="lang-pill">
+                    <a href="?lang=fr" class="lang-btn {% if LANGUAGE_CODE == 'fr' %}active{% endif %}">FR</a>
+                    <a href="?lang=wo" class="lang-btn">WO</a>
+                    <a href="?lang=it" class="lang-btn">IT</a>
+                </div>
+                <div style="width:28px;height:28px;border-radius:6px;background:#f4f6f9;border:0.5px solid #e5e9f0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#8a94a6;position:relative">
+                    <i class="fa-regular fa-bell"></i>
+                </div>
+                <a href="{% url 'logout' %}" style="font-size:11px;color:#8a94a6;display:flex;align-items:center;gap:5px;text-decoration:none" title="Déconnexion">
+                    <i class="fa-solid fa-right-from-bracket" style="font-size:13px"></i>
+                    {{ request.user.username }}
+                </a>
+            </div>
+        </header>
+
+        <!-- Contenu page -->
+        <main class="flex-1 p-5">
+            {% block content %}{% endblock %}
+        </main>
+
+    </div>
+</div>
 </body>
 </html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion — G-360</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f1923; min-height: 100vh; display: flex; }
+
+        .left-panel {
+            width: 420px;
+            background: #0f1923;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 50px;
+            border-right: 0.5px solid rgba(255,255,255,0.06);
+        }
+        .logo-block { margin-bottom: 48px; }
+        .logo-mark {
+            width: 48px; height: 48px; background: #1a56db;
+            border-radius: 12px; display: flex; align-items: center;
+            justify-content: center; font-size: 18px; font-weight: 800;
+            color: white; letter-spacing: 1px; margin-bottom: 16px;
+        }
+        .logo-name { font-size: 24px; font-weight: 700; color: white; letter-spacing: 2px; }
+        .logo-sub { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 4px; }
+
+        h2 { font-size: 18px; font-weight: 600; color: white; margin-bottom: 6px; }
+        .subtitle { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 32px; }
+
+        .field { margin-bottom: 16px; }
+        label { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px; }
+        .input-wrap { position: relative; }
+        .input-wrap i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.2); font-size: 14px; }
+        input[type=text], input[type=password] {
+            width: 100%; height: 44px; background: rgba(255,255,255,0.05);
+            border: 0.5px solid rgba(255,255,255,0.1); border-radius: 8px;
+            color: white; font-size: 14px; padding: 0 14px 0 40px;
+            outline: none; transition: border-color 0.2s;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        input:focus { border-color: #1a56db; background: rgba(26,86,219,0.08); }
+
+        .btn-login {
+            width: 100%; height: 44px; background: #1a56db; border: none;
+            border-radius: 8px; color: white; font-size: 14px; font-weight: 600;
+            cursor: pointer; margin-top: 8px; display: flex; align-items: center;
+            justify-content: center; gap: 8px; transition: background 0.2s;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .btn-login:hover { background: #1648c0; }
+
+        .error-msg { background: rgba(229,62,62,0.1); border: 0.5px solid rgba(229,62,62,0.3); border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #fc8181; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+        .right-panel {
+            flex: 1; background: #111d2b;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 40px;
+        }
+        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 400px; }
+        .feature-card {
+            background: rgba(255,255,255,0.03); border: 0.5px solid rgba(255,255,255,0.07);
+            border-radius: 10px; padding: 16px;
+        }
+        .feature-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 10px; }
+        .feature-title { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7); margin-bottom: 4px; }
+        .feature-desc { font-size: 11px; color: rgba(255,255,255,0.25); line-height: 1.5; }
+        .right-title { font-size: 22px; font-weight: 700; color: white; text-align: center; margin-bottom: 8px; }
+        .right-sub { font-size: 13px; color: rgba(255,255,255,0.3); text-align: center; margin-bottom: 32px; }
+    </style>
+</head>
+<body>
+
+<div class="left-panel">
+    <div class="logo-block">
+        <div class="logo-mark">G3</div>
+        <div class="logo-name">G-360</div>
+        <div class="logo-sub">Gestion commerciale · Sénégal</div>
+    </div>
+
+    <h2>Bienvenue</h2>
+    <p class="subtitle">Connectez-vous à votre espace de gestion</p>
+
+    {% if form.errors %}
+    <div class="error-msg">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        Identifiants incorrects. Veuillez réessayer.
+    </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="field">
+            <label>Nom d'utilisateur</label>
+            <div class="input-wrap">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" name="username" autofocus placeholder="Votre identifiant">
+            </div>
+        </div>
+        <div class="field">
+            <label>Mot de passe</label>
+            <div class="input-wrap">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" name="password" placeholder="••••••••">
+            </div>
+        </div>
+        <button type="submit" class="btn-login">
+            <i class="fa-solid fa-right-to-bracket"></i>
+            Se connecter
+        </button>
+        <input type="hidden" name="next" value="{{ next }}">
+    </form>
+</div>
+
+<div class="right-panel">
+    <div class="right-title">Gérez votre boutique à 360°</div>
+    <div class="right-sub">Stock · Ventes · Clients · Factures · Dettes</div>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="feature-icon" style="background:rgba(26,86,219,0.2)"><i class="fa-solid fa-boxes-stacked" style="color:#4d8bff"></i></div>
+            <div class="feature-title">Gestion du stock</div>
+            <div class="feature-desc">Suivez vos entrées et sorties en temps réel</div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon" style="background:rgba(13,159,110,0.2)"><i class="fa-solid fa-receipt" style="color:#34d399"></i></div>
+            <div class="feature-title">Factures PDF</div>
+            <div class="feature-desc">Générez et partagez vos factures facilement</div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon" style="background:rgba(217,119,6,0.2)"><i class="fa-solid fa-users" style="color:#fbbf24"></i></div>
+            <div class="feature-title">Suivi des dettes</div>
+            <div class="feature-desc">Visualisez les crédits clients non réglés</div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon" style="background:rgba(139,92,246,0.2)"><i class="fa-solid fa-chart-line" style="color:#a78bfa"></i></div>
+            <div class="feature-title">Statistiques</div>
+            <div class="feature-desc">Analysez vos ventes par jour, mois ou année</div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
