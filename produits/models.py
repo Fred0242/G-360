@@ -22,7 +22,7 @@ class Produit(models.Model):
         null=True, blank=True, related_name='produits'
     )
     nom = models.CharField(max_length=200)
-    reference = models.CharField(max_length=50, unique=True, blank=True)
+    reference = models.CharField(max_length=50, unique=True, blank=True, null=True)
     description = models.TextField(blank=True)
     prix_achat = models.DecimalField(max_digits=12, decimal_places=0, default=0)
     prix_vente = models.DecimalField(max_digits=12, decimal_places=0)

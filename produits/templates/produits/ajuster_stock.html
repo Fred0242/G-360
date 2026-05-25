@@ -1,0 +1,54 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Ajuster stock — G-360{% endblock %}
+{% block page_icon %}fa-solid fa-plus-minus{% endblock %}
+{% block page_title %}Ajuster le stock{% endblock %}
+
+{% block content %}
+<div style="max-width:480px">
+    <div class="panel" style="padding:24px">
+        <div style="margin-bottom:20px;padding:12px 14px;background:#f8fafc;border-radius:8px;border:0.5px solid #e5e9f0">
+            <div style="font-size:13px;font-weight:600;color:#1a1f2e">{{ produit.nom }}</div>
+            <div style="font-size:12px;color:#8a94a6;margin-top:2px">Stock actuel :
+                <span style="font-weight:600;color:{% if produit.en_rupture %}#e53e3e{% elif produit.stock_faible %}#d97706{% else %}#0d9f6e{% endif %}">
+                    {{ produit.quantite_stock }} unités
+                </span>
+            </div>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div style="margin-bottom:14px">
+                <label style="font-size:11px;color:#8a94a6;display:block;margin-bottom:6px">Type de mouvement *</label>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+                    <label style="display:flex;align-items:center;gap:6px;padding:8px 10px;border:0.5px solid #e5e9f0;border-radius:8px;cursor:pointer;font-size:12px">
+                        <input type="radio" name="type_mouvement" value="entree" checked> Entrée
+                    </label>
+                    <label style="display:flex;align-items:center;gap:6px;padding:8px 10px;border:0.5px solid #e5e9f0;border-radius:8px;cursor:pointer;font-size:12px">
+                        <input type="radio" name="type_mouvement" value="sortie"> Sortie
+                    </label>
+                    <label style="display:flex;align-items:center;gap:6px;padding:8px 10px;border:0.5px solid #e5e9f0;border-radius:8px;cursor:pointer;font-size:12px">
+                        <input type="radio" name="type_mouvement" value="ajustement"> Ajustement
+                    </label>
+                </div>
+            </div>
+            <div style="margin-bottom:14px">
+                <label style="font-size:11px;color:#8a94a6;display:block;margin-bottom:4px">Quantité *</label>
+                <input type="number" name="quantite" min="1" required
+                    style="width:100%;height:38px;border:0.5px solid #e5e9f0;border-radius:8px;padding:0 12px;font-size:13px;outline:none">
+            </div>
+            <div style="margin-bottom:20px">
+                <label style="font-size:11px;color:#8a94a6;display:block;margin-bottom:4px">Motif</label>
+                <input type="text" name="motif" placeholder="Ex: Livraison fournisseur, Vente, Perte..."
+                    style="width:100%;height:38px;border:0.5px solid #e5e9f0;border-radius:8px;padding:0 12px;font-size:13px;outline:none">
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end">
+                <a href="{% url 'stock' %}" style="height:38px;padding:0 16px;border:0.5px solid #e5e9f0;border-radius:8px;font-size:13px;color:#4a5568;text-decoration:none;display:flex;align-items:center">
+                    Annuler
+                </a>
+                <button type="submit" style="height:38px;padding:0 20px;background:#1a56db;color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">
+                    <i class="fa-solid fa-check" style="margin-right:6px"></i>Confirmer
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
