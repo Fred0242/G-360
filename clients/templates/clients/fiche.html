@@ -1,0 +1,80 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}{{ client.nom }} — G-360{% endblock %}
+{% block page_icon %}fa-solid fa-user{% endblock %}
+{% block page_title %}Fiche client{% endblock %}
+
+{% block content %}
+<div style="max-width:700px">
+
+    <!-- Infos client -->
+    <div class="panel" style="padding:20px;margin-bottom:16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <div style="display:flex;align-items:center;gap:14px">
+                <div style="width:48px;height:48px;border-radius:12px;background:#f0f4ff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#1a56db">
+                    {{ client.nom|slice:":2"|upper }}
+                </div>
+                <div>
+                    <div style="font-size:16px;font-weight:700;color:#1a1f2e">{{ client.nom }}</div>
+                    <div style="font-size:12px;color:#8a94a6">Client depuis {{ client.date_inscription|date:"d M Y" }}</div>
+                </div>
+            </div>
+            <a href="{% url 'client_modifier' client.id %}" style="height:34px;padding:0 14px;background:#f4f6f9;border:0.5px solid #e5e9f0;border-radius:8px;font-size:12px;color:#4a5568;text-decoration:none;display:flex;align-items:center;gap:6px">
+                <i class="fa-solid fa-pen"></i> Modifier
+            </a>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+            <div style="padding:12px;background:#f8fafc;border-radius:8px">
+                <div style="font-size:10px;color:#8a94a6;margin-bottom:4px">Téléphone</div>
+                <div style="font-size:13px;color:#1a1f2e;font-weight:500">{{ client.telephone|default:"—" }}</div>
+            </div>
+            <div style="padding:12px;background:#f8fafc;border-radius:8px">
+                <div style="font-size:10px;color:#8a94a6;margin-bottom:4px">Adresse</div>
+                <div style="font-size:13px;color:#1a1f2e;font-weight:500">{{ client.adresse|default:"—" }}</div>
+            </div>
+            <div style="padding:12px;background:{% if client.solde_credit > 0 %}#fef2f2{% else %}#f0fdf4{% endif %};border-radius:8px">
+                <div style="font-size:10px;color:#8a94a6;margin-bottom:4px">Solde dette</div>
+                <div style="font-size:13px;font-weight:700;color:{% if client.solde_credit > 0 %}#991b1b{% else %}#065f46{% endif %}">
+                    {{ client.solde_credit|floatformat:0 }} FCFA
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Historique factures -->
+    <div class="panel">
+        <div style="padding:12px 16px;border-bottom:0.5px solid #f0f2f7;font-size:13px;font-weight:600;color:#1a1f2e;display:flex;align-items:center;gap:6px">
+            <i class="fa-solid fa-receipt" style="color:#1a56db;font-size:13px"></i>
+            Historique des factures
+        </div>
+        {% for facture in factures %}
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:11px 16px;border-bottom:0.5px solid #f8fafc;align-items:center;font-size:13px">
+            <div style="font-weight:500;color:#1a1f2e">{{ facture.numero }}</div>
+            <div style="color:#8a94a6">{{ facture.date_emission|date:"d M Y" }}</div>
+            <div style="font-weight:500;color:#1a1f2e">{{ facture.montant_total|floatformat:0 }} FCFA</div>
+            <div>
+                {% if facture.statut == 'payee' %}
+                <span style="background:#ecfdf5;color:#065f46;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:500">Payée</span>
+                {% elif facture.statut == 'partielle' %}
+                <span style="background:#fffbeb;color:#92400e;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:500">Partielle</span>
+                {% elif facture.statut == 'credit' %}
+                <span style="background:#fef2f2;color:#991b1b;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:500">Crédit</span>
+                {% else %}
+                <span style="background:#fef2f2;color:#991b1b;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:500">Impayée</span>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div style="padding:24px;text-align:center;color:#8a94a6;font-size:13px">
+            <i class="fa-solid fa-receipt" style="font-size:20px;margin-bottom:6px;display:block;opacity:0.3"></i>
+            Aucune facture pour ce client
+        </div>
+        {% endfor %}
+    </div>
+
+    <div style="margin-top:12px">
+        <a href="{% url 'clients_liste' %}" style="font-size:12px;color:#8a94a6;text-decoration:none;display:flex;align-items:center;gap:4px">
+            <i class="fa-solid fa-arrow-left fa-xs"></i> Retour à la liste
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,7 +1,128 @@
 {% extends 'dashboard/base.html' %}
 {% block title %}Clients — G-360{% endblock %}
 {% block page_icon %}fa-solid fa-users{% endblock %}
-{% block page_title %}Clients{% endblock %}
+{% block page_title %}Gestion des Clients{% endblock %}
+
 {% block content %}
-<p style="color:#8a94a6;font-size:13px">Page clients en construction...</p>
+
+{% if messages %}
+{% for msg in messages %}
+<div style="margin-bottom:12px;padding:10px 14px;border-radius:8px;font-size:13px;
+    background:{% if msg.tags == 'error' %}#fef2f2{% else %}#f0fdf4{% endif %};
+    color:{% if msg.tags == 'error' %}#991b1b{% else %}#065f46{% endif %};
+    border:0.5px solid {% if msg.tags == 'error' %}#fecaca{% else %}#bbf7d0{% endif %}">
+    <i class="fa-solid {% if msg.tags == 'error' %}fa-circle-exclamation{% else %}fa-circle-check{% endif %}" style="margin-right:6px"></i>{{ msg }}
+</div>
+{% endfor %}
+{% endif %}
+
+<!-- Stats -->
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
+    <div class="stat-card" style="display:flex;align-items:center;gap:12px;padding:12px 14px">
+        <div style="width:32px;height:32px;border-radius:8px;background:#f0f4ff;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-solid fa-users" style="color:#1a56db;font-size:14px"></i>
+        </div>
+        <div>
+            <div style="font-size:18px;font-weight:700;color:#1a1f2e">{{ total_clients }}</div>
+            <div style="font-size:10px;color:#8a94a6">Total clients</div>
+        </div>
+    </div>
+    <div class="stat-card" style="display:flex;align-items:center;gap:12px;padding:12px 14px">
+        <div style="width:32px;height:32px;border-radius:8px;background:#fef2f2;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-solid fa-triangle-exclamation" style="color:#e53e3e;font-size:14px"></i>
+        </div>
+        <div>
+            <div style="font-size:18px;font-weight:700;color:#1a1f2e">{{ clients_en_dette }}</div>
+            <div style="font-size:10px;color:#8a94a6">Clients avec dettes</div>
+        </div>
+    </div>
+    <div class="stat-card" style="display:flex;align-items:center;gap:12px;padding:12px 14px">
+        <div style="width:32px;height:32px;border-radius:8px;background:#fffbeb;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-solid fa-money-bill-wave" style="color:#d97706;font-size:14px"></i>
+        </div>
+        <div>
+            <div style="font-size:18px;font-weight:700;color:#1a1f2e">{{ total_dettes|floatformat:0 }}</div>
+            <div style="font-size:10px;color:#8a94a6">FCFA total dettes</div>
+        </div>
+    </div>
+</div>
+
+<!-- Tabs + actions -->
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+    <div style="display:flex;gap:4px;background:white;padding:4px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.07),0 0 1px rgba(0,0,0,0.05)">
+        <a href="?vue=tous" style="padding:7px 16px;border-radius:7px;font-size:12px;font-weight:500;text-decoration:none;
+            {% if vue == 'tous' %}background:#1a56db;color:white{% else %}color:#8a94a6{% endif %}">
+            Tous les clients
+        </a>
+        <a href="?vue=dettes" style="padding:7px 16px;border-radius:7px;font-size:12px;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:5px;
+            {% if vue == 'dettes' %}background:#1a56db;color:white{% else %}color:#8a94a6{% endif %}">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size:10px"></i> Avec dettes
+        </a>
+    </div>
+    <a href="{% url 'client_ajouter' %}" style="height:36px;padding:0 14px;background:#1a56db;color:white;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;text-decoration:none">
+        <i class="fa-solid fa-plus"></i> Ajouter un client
+    </a>
+</div>
+
+<!-- Recherche -->
+<form method="get" style="margin-bottom:12px">
+    <input type="hidden" name="vue" value="{{ vue }}">
+    <div style="position:relative;max-width:400px">
+        <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#8a94a6;font-size:12px"></i>
+        <input type="text" name="search" value="{{ search }}" placeholder="Rechercher par nom ou téléphone..."
+            style="width:100%;height:36px;border:0.5px solid #e5e9f0;border-radius:8px;padding:0 12px 0 32px;font-size:12px;outline:none;background:white">
+    </div>
+</form>
+
+<!-- Table -->
+<div class="panel">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 80px;padding:10px 16px;background:#f8fafc;border-bottom:0.5px solid #f0f2f7;font-size:10px;color:#8a94a6;text-transform:uppercase;letter-spacing:0.5px">
+        <div>Client</div><div>Téléphone</div><div>Inscription</div><div>Solde dette</div><div>Actions</div>
+    </div>
+
+    {% for client in clients %}
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 80px;padding:12px 16px;border-bottom:0.5px solid #f8fafc;align-items:center">
+        <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:30px;height:30px;border-radius:8px;background:#f0f4ff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#1a56db;flex-shrink:0">
+                {{ client.nom|slice:":2"|upper }}
+            </div>
+            <div>
+                <div style="font-size:13px;font-weight:500;color:#1a1f2e">{{ client.nom }}</div>
+                <div style="font-size:11px;color:#8a94a6">{{ client.adresse|default:"—" }}</div>
+            </div>
+        </div>
+        <div style="font-size:12px;color:#4a5568">{{ client.telephone|default:"—" }}</div>
+        <div style="font-size:12px;color:#8a94a6">{{ client.date_inscription|date:"d M Y" }}</div>
+        <div>
+            {% if client.solde_credit > 0 %}
+            <span style="background:#fef2f2;color:#991b1b;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:500">
+                {{ client.solde_credit|floatformat:0 }} FCFA
+            </span>
+            {% else %}
+            <span style="background:#ecfdf5;color:#065f46;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:500">
+                Soldé
+            </span>
+            {% endif %}
+        </div>
+        <div style="display:flex;gap:4px">
+            <a href="{% url 'client_fiche' client.id %}" style="width:28px;height:28px;border-radius:6px;border:0.5px solid #e5e9f0;background:white;display:flex;align-items:center;justify-content:center;color:#8a94a6;font-size:12px;text-decoration:none" title="Voir fiche">
+                <i class="fa-solid fa-eye"></i>
+            </a>
+            <a href="{% url 'client_modifier' client.id %}" style="width:28px;height:28px;border-radius:6px;border:0.5px solid #e5e9f0;background:white;display:flex;align-items:center;justify-content:center;color:#8a94a6;font-size:12px;text-decoration:none" title="Modifier">
+                <i class="fa-solid fa-pen"></i>
+            </a>
+            <a href="{% url 'client_supprimer' client.id %}" style="width:28px;height:28px;border-radius:6px;border:0.5px solid #fecaca;background:white;display:flex;align-items:center;justify-content:center;color:#e53e3e;font-size:12px;text-decoration:none" title="Supprimer"
+                onclick="return confirm('Supprimer ce client ?')">
+                <i class="fa-solid fa-trash"></i>
+            </a>
+        </div>
+    </div>
+    {% empty %}
+    <div style="padding:32px;text-align:center;color:#8a94a6;font-size:13px">
+        <i class="fa-solid fa-users" style="font-size:24px;margin-bottom:8px;display:block;opacity:0.3"></i>
+        Aucun client trouvé
+    </div>
+    {% endfor %}
+</div>
+
 {% endblock %}
