@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 13px; color: #1a1f2e; padding: 40px; }
+  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 2px solid #1a56db; }
+  .logo { font-size: 24px; font-weight: 800; color: #1a56db; letter-spacing: 2px; }
+  .logo-sub { font-size: 11px; color: #8a94a6; margin-top: 2px; }
+  .facture-info { text-align: right; }
+  .facture-num { font-size: 18px; font-weight: 700; color: #1a56db; }
+  .facture-date { font-size: 11px; color: #8a94a6; margin-top: 4px; }
+  .parties { display: flex; justify-content: space-between; margin-bottom: 28px; }
+  .partie { width: 48%; }
+  .partie-label { font-size: 10px; color: #8a94a6; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .partie-nom { font-size: 14px; font-weight: 600; color: #1a1f2e; margin-bottom: 2px; }
+  .partie-detail { font-size: 12px; color: #4a5568; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+  thead th { background: #f8fafc; padding: 10px 12px; text-align: left; font-size: 10px; color: #8a94a6; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e5e9f0; }
+  tbody td { padding: 10px 12px; border-bottom: 1px solid #f0f2f7; font-size: 13px; }
+  .total-section { margin-left: auto; width: 220px; }
+  .total-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 13px; }
+  .total-final { display: flex; justify-content: space-between; padding: 10px 0; font-size: 16px; font-weight: 700; border-top: 2px solid #1a56db; margin-top: 6px; color: #1a56db; }
+  .statut { display: inline-block; padding: 4px 12px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .statut.payee { background: #ecfdf5; color: #065f46; }
+  .statut.credit { background: #fef2f2; color: #991b1b; }
+  .statut.partielle { background: #fffbeb; color: #92400e; }
+  .footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #f0f2f7; font-size: 11px; color: #8a94a6; text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="header">
+    <div>
+        <div class="logo">G-360</div>
+        <div class="logo-sub">Gestion commerciale · Sénégal</div>
+    </div>
+    <div class="facture-info">
+        <div class="facture-num">{{ facture.numero }}</div>
+        <div class="facture-date">Émise le {{ facture.date_emission|date:"d M Y" }}</div>
+        {% if facture.date_echeance %}
+        <div class="facture-date">Échéance : {{ facture.date_echeance|date:"d M Y" }}</div>
+        {% endif %}
+        <div style="margin-top:6px">
+            <span class="statut {{ facture.statut }}">{{ facture.get_statut_display }}</span>
+        </div>
+    </div>
+</div>
+
+<div class="parties">
+    <div class="partie">
+        <div class="partie-label">De</div>
+        <div class="partie-nom">G-360 Boutique</div>
+        <div class="partie-detail">Dakar, Sénégal</div>
+    </div>
+    <div class="partie" style="text-align:right">
+        <div class="partie-label">Facturé à</div>
+        <div class="partie-nom">{{ facture.nom_client_affiche }}</div>
+        {% if facture.client %}
+        <div class="partie-detail">{{ facture.client.telephone }}</div>
+        <div class="partie-detail">{{ facture.client.adresse }}</div>
+        {% endif %}
+    </div>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Produit</th>
+            <th style="text-align:center">Quantité</th>
+            <th style="text-align:right">Prix unitaire</th>
+            <th style="text-align:right">Sous-total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ligne in facture.lignes.all %}
+        <tr>
+            <td>{{ ligne.produit.nom }}</td>
+            <td style="text-align:center">{{ ligne.quantite }}</td>
+            <td style="text-align:right">{{ ligne.prix_unitaire|floatformat:0 }} FCFA</td>
+            <td style="text-align:right;font-weight:600">{{ ligne.sous_total|floatformat:0 }} FCFA</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="total-section">
+    <div class="total-row">
+        <span style="color:#8a94a6">Montant total</span>
+        <span>{{ facture.montant_total|floatformat:0 }} FCFA</span>
+    </div>
+    <div class="total-row">
+        <span style="color:#8a94a6">Déjà payé</span>
+        <span style="color:#0d9f6e">{{ facture.montant_paye|floatformat:0 }} FCFA</span>
+    </div>
+    {% if facture.montant_du > 0 %}
+    <div class="total-final">
+        <span>Reste dû</span>
+        <span>{{ facture.montant_du|floatformat:0 }} FCFA</span>
+    </div>
+    {% else %}
+    <div class="total-final" style="color:#0d9f6e">
+        <span>Soldée</span>
+        <span>✓</span>
+    </div>
+    {% endif %}
+</div>
+
+{% if facture.notes %}
+<div style="margin-top:24px;padding:12px;background:#f8fafc;border-radius:6px;font-size:12px;color:#4a5568">
+    <strong>Notes :</strong> {{ facture.notes }}
+</div>
+{% endif %}
+
+<div class="footer">
+    G-360 — Gestion commerciale · Merci pour votre confiance
+</div>
+
+</body>
+</html>

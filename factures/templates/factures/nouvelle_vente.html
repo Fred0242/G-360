@@ -1,0 +1,175 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Nouvelle vente — G-360{% endblock %}
+{% block page_icon %}fa-solid fa-plus{% endblock %}
+{% block page_title %}Nouvelle vente{% endblock %}
+
+{% block content %}
+<div style="max-width:750px">
+<form method="post" id="venteForm">
+{% csrf_token %}
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+
+    <!-- Client -->
+    <div class="panel" style="padding:18px">
+        <div style="font-size:13px;font-weight:600;color:#1a1f2e;margin-bottom:12px;display:flex;align-items:center;gap:6px">
+            <i class="fa-solid fa-user" style="color:#1a56db;font-size:13px"></i> Client
+        </div>
+        <div style="margin-bottom:10px">
+            <label style="font-size:11px;color:#8a94a6;display:block;margin-bottom:4px">Client enregistré</label>
+            <select name="client_id" style="width:100%;height:36px;border:0.5px solid #e5e9f0;border-radius:8px;padding:0 10px;font-size:12px;outline:none;background:white">
+                <option value="">— Client anonyme —</option>
+                {% for client in clients %}
+                <option value="{{ client.id }}">{{ client.nom }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label style="font-size:11px;color:#8a94a6;display:block;margin-bottom:4px">Ou nom temporaire</label>
+            <input type="text" name="client_nom_temp" placeholder="Ex: Moussa (passage)"
+                style="width:100%;height:36px;border:0.5px solid #e5e9f0;border-radius:8px;padding:0 10px;font-size:12px;outline:none">
+        </div>
+    </div>
+
+    <!-- Paiement -->
+    <div class="panel" style="padding:18px">
+        <div style="font-size:13px;font-weight:600;color:#1a1f2e;margin-bottom:12px;display:flex;align-items:center;gap:6px">
+            <i class="fa-solid fa-wallet" style="color:#1a56db;font-size:13px"></i> Paiement
+        </div>
+        <div style="margin-bottom:10px">
+            <label style="font-size:11px;color:#8a94a6;display:block;margin-bottom:6px">Mode de paiement *</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+                <label style="display:flex;align-items:center;gap:6px;padding:8px;border:0.5px solid #e5e9f0;border-radius:6px;cursor:pointer;font-size:12px">
+                    <input type="radio" name="mode_paiement" value="cash" checked> Cash
+                </label>
+                <label style="display:flex;align-items:center;gap:6px;padding:8px;border:0.5px solid #e5e9f0;border-radius:6px;cursor:pointer;font-size:12px">
+                    <input type="radio" name="mode_paiement" value="orange_money"> Orange Money
+                </label>
+                <label style="display:flex;align-items:center;gap:6px;padding:8px;border:0.5px solid #e5e9f0;border-radius:6px;cursor:pointer;font-size:12px">
+                    <input type="radio" name="mode_paiement" value="wave"> Wave
+                </label>
+                <label style="display:flex;align-items:center;gap:6px;padding:8px;border:0.5px solid #fecaca;border-radius:6px;cursor:pointer;font-size:12px;color:#991b1b">
+                    <input type="radio" name="mode_paiement" value="credit"> Crédit
+                </label>
+            </div>
+        </div>
+        <div>
+            <label style="font-size:11px;color:#8a94a6;display:block;margin-bottom:4px">Date d'échéance (si crédit)</label>
+            <input type="date" name="date_echeance"
+                style="width:100%;height:36px;border:0.5px solid #e5e9f0;border-radius:8px;padding:0 10px;font-size:12px;outline:none">
+        </div>
+    </div>
+</div>
+
+<!-- Produits -->
+<div class="panel" style="padding:18px;margin-bottom:16px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div style="font-size:13px;font-weight:600;color:#1a1f2e;display:flex;align-items:center;gap:6px">
+            <i class="fa-solid fa-boxes-stacked" style="color:#1a56db;font-size:13px"></i> Produits
+        </div>
+        <button type="button" onclick="ajouterLigne()" style="height:32px;padding:0 12px;background:#f0f4ff;color:#1a56db;border:0.5px solid #bfdbfe;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer">
+            <i class="fa-solid fa-plus" style="margin-right:4px"></i> Ajouter une ligne
+        </button>
+    </div>
+
+    <!-- Header -->
+    <div style="display:grid;grid-template-columns:2fr 80px 100px 80px 30px;gap:8px;padding:6px 0;font-size:10px;color:#8a94a6;text-transform:uppercase;letter-spacing:0.5px;border-bottom:0.5px solid #f0f2f7;margin-bottom:8px">
+        <div>Produit</div><div>Qté</div><div>Prix unit.</div><div>Sous-total</div><div></div>
+    </div>
+
+    <div id="lignes"></div>
+
+    <!-- Total -->
+    <div style="border-top:0.5px solid #f0f2f7;margin-top:12px;padding-top:12px;text-align:right">
+        <span style="font-size:12px;color:#8a94a6;margin-right:12px">Total :</span>
+        <span id="totalAffiche" style="font-size:18px;font-weight:700;color:#1a1f2e">0 FCFA</span>
+    </div>
+</div>
+
+<!-- Notes -->
+<div class="panel" style="padding:18px;margin-bottom:16px">
+    <label style="font-size:11px;color:#8a94a6;display:block;margin-bottom:4px">Notes (optionnel)</label>
+    <textarea name="notes" rows="2"
+        style="width:100%;border:0.5px solid #e5e9f0;border-radius:8px;padding:8px 12px;font-size:13px;outline:none;resize:none;font-family:'Segoe UI',sans-serif"></textarea>
+</div>
+
+<!-- Actions -->
+<div style="display:flex;gap:8px;justify-content:flex-end">
+    <a href="{% url 'ventes' %}" style="height:40px;padding:0 18px;border:0.5px solid #e5e9f0;border-radius:8px;font-size:13px;color:#4a5568;text-decoration:none;display:flex;align-items:center">
+        Annuler
+    </a>
+    <button type="submit" style="height:40px;padding:0 24px;background:#1a56db;color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">
+        <i class="fa-solid fa-check" style="margin-right:6px"></i> Enregistrer la vente
+    </button>
+</div>
+</form>
+</div>
+
+<script>
+const produits = [
+    {% for p in produits %}
+    {id: "{{ p.id }}", nom: "{{ p.nom }}", prix: {{ p.prix_vente }}, stock: {{ p.quantite_stock }}},
+    {% endfor %}
+];
+
+let ligneCount = 0;
+
+function ajouterLigne() {
+    ligneCount++;
+    const div = document.createElement('div');
+    div.id = `ligne-${ligneCount}`;
+    div.style.cssText = 'display:grid;grid-template-columns:2fr 80px 100px 80px 30px;gap:8px;margin-bottom:8px;align-items:center';
+
+    const opts = produits.map(p => `<option value="${p.id}" data-prix="${p.prix}">${p.nom} (${p.stock})</option>`).join('');
+
+    div.innerHTML = `
+        <select name="produit_id[]" onchange="majPrix(this, ${ligneCount})"
+            style="height:34px;border:0.5px solid #e5e9f0;border-radius:6px;padding:0 8px;font-size:12px;outline:none;width:100%">
+            ${opts}
+        </select>
+        <input type="number" name="quantite[]" id="qte-${ligneCount}" value="1" min="1"
+            oninput="majTotal()"
+            style="height:34px;border:0.5px solid #e5e9f0;border-radius:6px;padding:0 8px;font-size:12px;outline:none;width:100%">
+        <input type="number" name="prix_unitaire[]" id="pu-${ligneCount}"
+            value="${produits[0]?.prix || 0}"
+            oninput="majTotal()"
+            style="height:34px;border:0.5px solid #e5e9f0;border-radius:6px;padding:0 8px;font-size:12px;outline:none;width:100%">
+        <span id="st-${ligneCount}" style="font-size:12px;font-weight:500;color:#1a1f2e;text-align:right">${(produits[0]?.prix || 0).toLocaleString()} FCFA</span>
+        <button type="button" onclick="supprimerLigne(${ligneCount})"
+            style="width:26px;height:26px;border-radius:6px;border:0.5px solid #fecaca;background:white;color:#e53e3e;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    `;
+    document.getElementById('lignes').appendChild(div);
+    majTotal();
+}
+
+function majPrix(sel, id) {
+    const opt = sel.options[sel.selectedIndex];
+    const prix = opt.getAttribute('data-prix');
+    document.getElementById(`pu-${id}`).value = prix;
+    majTotal();
+}
+
+function supprimerLigne(id) {
+    document.getElementById(`ligne-${id}`).remove();
+    majTotal();
+}
+
+function majTotal() {
+    let total = 0;
+    const qtes = document.querySelectorAll('[name="quantite[]"]');
+    const pus = document.querySelectorAll('[name="prix_unitaire[]"]');
+    qtes.forEach((q, i) => {
+        const st = parseInt(q.value || 0) * parseInt(pus[i].value || 0);
+        total += st;
+        const ligneId = q.id.replace('qte-', '');
+        const stEl = document.getElementById(`st-${ligneId}`);
+        if (stEl) stEl.textContent = st.toLocaleString() + ' FCFA';
+    });
+    document.getElementById('totalAffiche').textContent = total.toLocaleString() + ' FCFA';
+}
+
+// Ajoute une ligne par défaut
+ajouterLigne();
+</script>
+{% endblock %}

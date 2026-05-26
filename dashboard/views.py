@@ -8,7 +8,7 @@ def dashboard(request):
         'today': date.today().strftime('%A %d %B %Y'),
         'stats': {
             'clients': 0,
-            'ventes_mois': 0,
+            # 'ventes_mois': 0,
             'produits': 0,
             'dettes_total': 0,
         }

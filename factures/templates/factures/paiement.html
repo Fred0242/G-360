@@ -1,0 +1,50 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Paiement — G-360{% endblock %}
+{% block page_icon %}fa-solid fa-hand-holding-dollar{% endblock %}
+{% block page_title %}Enregistrer un paiement{% endblock %}
+
+{% block content %}
+<div style="max-width:440px">
+    <div class="panel" style="padding:24px">
+        <div style="margin-bottom:20px;padding:12px 14px;background:#f8fafc;border-radius:8px">
+            <div style="font-size:12px;color:#8a94a6;margin-bottom:4px">Facture {{ facture.numero }}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+                <div style="font-size:13px;font-weight:500;color:#1a1f2e">{{ facture.nom_client_affiche }}</div>
+                <div style="font-size:15px;font-weight:700;color:#e53e3e">{{ facture.montant_du|floatformat:0 }} FCFA</div>
+            </div>
+            <div style="font-size:11px;color:#8a94a6;margin-top:2px">Reste à payer</div>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div style="margin-bottom:14px">
+                <label style="font-size:11px;color:#8a94a6;display:block;margin-bottom:4px">Montant reçu (FCFA) *</label>
+                <input type="number" name="montant" max="{{ facture.montant_du|floatformat:0 }}" required
+                    placeholder="Ex: 25000"
+                    style="width:100%;height:38px;border:0.5px solid #e5e9f0;border-radius:8px;padding:0 12px;font-size:14px;font-weight:600;outline:none">
+            </div>
+            <div style="margin-bottom:20px">
+                <label style="font-size:11px;color:#8a94a6;display:block;margin-bottom:6px">Mode de paiement *</label>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
+                    <label style="display:flex;align-items:center;gap:5px;padding:8px;border:0.5px solid #e5e9f0;border-radius:6px;cursor:pointer;font-size:12px">
+                        <input type="radio" name="mode_paiement" value="cash" checked> Cash
+                    </label>
+                    <label style="display:flex;align-items:center;gap:5px;padding:8px;border:0.5px solid #e5e9f0;border-radius:6px;cursor:pointer;font-size:12px">
+                        <input type="radio" name="mode_paiement" value="orange_money"> Orange Money
+                    </label>
+                    <label style="display:flex;align-items:center;gap:5px;padding:8px;border:0.5px solid #e5e9f0;border-radius:6px;cursor:pointer;font-size:12px">
+                        <input type="radio" name="mode_paiement" value="wave"> Wave
+                    </label>
+                </div>
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end">
+                <a href="{% url 'facture_detail' facture.id %}" style="height:38px;padding:0 16px;border:0.5px solid #e5e9f0;border-radius:8px;font-size:13px;color:#4a5568;text-decoration:none;display:flex;align-items:center">
+                    Annuler
+                </a>
+                <button type="submit" style="height:38px;padding:0 20px;background:#0d9f6e;color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">
+                    <i class="fa-solid fa-check" style="margin-right:6px"></i>Confirmer
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

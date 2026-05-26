@@ -1,0 +1,114 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}{{ facture.numero }} — G-360{% endblock %}
+{% block page_icon %}fa-solid fa-receipt{% endblock %}
+{% block page_title %}Détail facture{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+{% for msg in messages %}
+<div style="margin-bottom:12px;padding:10px 14px;border-radius:8px;font-size:13px;
+    background:{% if msg.tags == 'error' %}#fef2f2{% else %}#f0fdf4{% endif %};
+    color:{% if msg.tags == 'error' %}#991b1b{% else %}#065f46{% endif %};
+    border:0.5px solid {% if msg.tags == 'error' %}#fecaca{% else %}#bbf7d0{% endif %}">
+    <i class="fa-solid {% if msg.tags == 'error' %}fa-circle-exclamation{% else %}fa-circle-check{% endif %}" style="margin-right:6px"></i>{{ msg }}
+</div>
+{% endfor %}
+{% endif %}
+
+<div style="max-width:680px">
+
+    <!-- Header facture -->
+    <div class="panel" style="padding:20px;margin-bottom:14px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px">
+            <div>
+                <div style="font-size:18px;font-weight:700;color:#1a56db">{{ facture.numero }}</div>
+                <div style="font-size:12px;color:#8a94a6;margin-top:2px">{{ facture.date_emission|date:"d M Y à H:i" }}</div>
+            </div>
+            <div style="display:flex;gap:6px">
+                <a href="{% url 'facture_pdf' facture.id %}" target="_blank"
+                    style="height:34px;padding:0 12px;border:0.5px solid #e5e9f0;border-radius:8px;font-size:12px;color:#4a5568;text-decoration:none;display:flex;align-items:center;gap:5px">
+                    <i class="fa-solid fa-file-pdf" style="color:#e53e3e"></i> PDF
+                </a>
+                {% if facture.statut != 'payee' %}
+                <a href="{% url 'enregistrer_paiement' facture.id %}"
+                    style="height:34px;padding:0 12px;background:#0d9f6e;color:white;border:none;border-radius:8px;font-size:12px;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:5px">
+                    <i class="fa-solid fa-hand-holding-dollar"></i> Paiement
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+            <div style="padding:10px;background:#f8fafc;border-radius:8px">
+                <div style="font-size:10px;color:#8a94a6;margin-bottom:3px">Client</div>
+                <div style="font-size:13px;font-weight:500;color:#1a1f2e">{{ facture.nom_client_affiche }}</div>
+            </div>
+            <div style="padding:10px;background:#f8fafc;border-radius:8px">
+                <div style="font-size:10px;color:#8a94a6;margin-bottom:3px">Mode paiement</div>
+                <div style="font-size:13px;font-weight:500;color:#1a1f2e">{{ facture.get_mode_paiement_display }}</div>
+            </div>
+            <div style="padding:10px;background:{% if facture.statut == 'payee' %}#f0fdf4{% else %}#fef2f2{% endif %};border-radius:8px">
+                <div style="font-size:10px;color:#8a94a6;margin-bottom:3px">Statut</div>
+                <div style="font-size:13px;font-weight:600;color:{% if facture.statut == 'payee' %}#065f46{% else %}#991b1b{% endif %}">
+                    {{ facture.get_statut_display }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lignes -->
+    <div class="panel" style="margin-bottom:14px">
+        <div style="padding:12px 16px;border-bottom:0.5px solid #f0f2f7;font-size:13px;font-weight:600;color:#1a1f2e">
+            <i class="fa-solid fa-list" style="color:#1a56db;margin-right:6px"></i>Produits
+        </div>
+        <div style="display:grid;grid-template-columns:2fr 80px 1fr 1fr;padding:8px 16px;font-size:10px;color:#8a94a6;text-transform:uppercase;letter-spacing:0.5px;background:#f8fafc">
+            <div>Produit</div><div>Qté</div><div>Prix unit.</div><div style="text-align:right">Sous-total</div>
+        </div>
+        {% for ligne in facture.lignes.all %}
+        <div style="display:grid;grid-template-columns:2fr 80px 1fr 1fr;padding:11px 16px;border-bottom:0.5px solid #f8fafc;font-size:13px;align-items:center">
+            <div style="font-weight:500;color:#1a1f2e">{{ ligne.produit.nom }}</div>
+            <div style="color:#8a94a6">{{ ligne.quantite }}</div>
+            <div style="color:#8a94a6">{{ ligne.prix_unitaire|floatformat:0 }} FCFA</div>
+            <div style="text-align:right;font-weight:600;color:#1a1f2e">{{ ligne.sous_total|floatformat:0 }} FCFA</div>
+        </div>
+        {% endfor %}
+        <div style="padding:12px 16px;display:flex;justify-content:flex-end;gap:24px;border-top:0.5px solid #f0f2f7">
+            <div style="text-align:right">
+                <div style="font-size:11px;color:#8a94a6;margin-bottom:2px">Total</div>
+                <div style="font-size:16px;font-weight:700;color:#1a1f2e">{{ facture.montant_total|floatformat:0 }} FCFA</div>
+            </div>
+            <div style="text-align:right">
+                <div style="font-size:11px;color:#8a94a6;margin-bottom:2px">Payé</div>
+                <div style="font-size:16px;font-weight:700;color:#0d9f6e">{{ facture.montant_paye|floatformat:0 }} FCFA</div>
+            </div>
+            {% if facture.montant_du > 0 %}
+            <div style="text-align:right">
+                <div style="font-size:11px;color:#8a94a6;margin-bottom:2px">Reste dû</div>
+                <div style="font-size:16px;font-weight:700;color:#e53e3e">{{ facture.montant_du|floatformat:0 }} FCFA</div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Historique paiements -->
+    {% if facture.paiements.all %}
+    <div class="panel" style="margin-bottom:14px">
+        <div style="padding:12px 16px;border-bottom:0.5px solid #f0f2f7;font-size:13px;font-weight:600;color:#1a1f2e">
+            <i class="fa-solid fa-clock-rotate-left" style="color:#1a56db;margin-right:6px"></i>Historique paiements
+        </div>
+        {% for p in facture.paiements.all %}
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:0.5px solid #f8fafc;font-size:12px">
+            <div style="color:#8a94a6">{{ p.date_paiement|date:"d M Y à H:i" }}</div>
+            <div style="color:#4a5568">{{ p.get_mode_paiement_display }}</div>
+            <div style="font-weight:600;color:#0d9f6e">+{{ p.montant|floatformat:0 }} FCFA</div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <a href="{% url 'ventes' %}" style="font-size:12px;color:#8a94a6;text-decoration:none;display:flex;align-items:center;gap:4px">
+        <i class="fa-solid fa-arrow-left fa-xs"></i> Retour aux ventes
+    </a>
+</div>
+{% endblock %}

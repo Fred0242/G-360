@@ -1,0 +1,124 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Ventes & Factures — G-360{% endblock %}
+{% block page_icon %}fa-solid fa-receipt{% endblock %}
+{% block page_title %}Ventes & Factures{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+{% for msg in messages %}
+<div style="margin-bottom:12px;padding:10px 14px;border-radius:8px;font-size:13px;
+    background:{% if msg.tags == 'error' %}#fef2f2{% else %}#f0fdf4{% endif %};
+    color:{% if msg.tags == 'error' %}#991b1b{% else %}#065f46{% endif %};
+    border:0.5px solid {% if msg.tags == 'error' %}#fecaca{% else %}#bbf7d0{% endif %}">
+    <i class="fa-solid {% if msg.tags == 'error' %}fa-circle-exclamation{% else %}fa-circle-check{% endif %}" style="margin-right:6px"></i>{{ msg }}
+</div>
+{% endfor %}
+{% endif %}
+
+<!-- Stats -->
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
+    <div class="stat-card" style="display:flex;align-items:center;gap:12px;padding:12px 14px">
+        <div style="width:32px;height:32px;border-radius:8px;background:#f0f4ff;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-solid fa-receipt" style="color:#1a56db;font-size:14px"></i>
+        </div>
+        <div>
+            <div style="font-size:18px;font-weight:700;color:#1a1f2e">{{ stats.total_factures }}</div>
+            <div style="font-size:10px;color:#8a94a6">Factures période</div>
+        </div>
+    </div>
+    <div class="stat-card" style="display:flex;align-items:center;gap:12px;padding:12px 14px">
+        <div style="width:32px;height:32px;border-radius:8px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-solid fa-money-bill-wave" style="color:#0d9f6e;font-size:14px"></i>
+        </div>
+        <div>
+            <div style="font-size:18px;font-weight:700;color:#1a1f2e">{{ stats.total_encaisse|floatformat:0 }}</div>
+            <div style="font-size:10px;color:#8a94a6">FCFA encaissés</div>
+        </div>
+    </div>
+    <div class="stat-card" style="display:flex;align-items:center;gap:12px;padding:12px 14px">
+        <div style="width:32px;height:32px;border-radius:8px;background:#fef2f2;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-solid fa-clock" style="color:#e53e3e;font-size:14px"></i>
+        </div>
+        <div>
+            <div style="font-size:18px;font-weight:700;color:#1a1f2e">{{ stats.total_attente|floatformat:0 }}</div>
+            <div style="font-size:10px;color:#8a94a6">FCFA en attente</div>
+        </div>
+    </div>
+    <div class="stat-card" style="display:flex;align-items:center;gap:12px;padding:12px 14px">
+        <div style="width:32px;height:32px;border-radius:8px;background:#fffbeb;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-solid fa-star" style="color:#d97706;font-size:14px"></i>
+        </div>
+        <div>
+            <div style="font-size:14px;font-weight:700;color:#1a1f2e">{{ stats.top_produit }}</div>
+            <div style="font-size:10px;color:#8a94a6">Top produit</div>
+        </div>
+    </div>
+</div>
+
+<!-- Filtres + action -->
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+    <form method="get" style="display:flex;gap:6px;align-items:center">
+        <a href="?filtre=jour" style="height:32px;padding:0 12px;border-radius:6px;font-size:11px;font-weight:500;text-decoration:none;display:flex;align-items:center;border:0.5px solid {% if filtre == 'jour' %}#1a56db{% else %}#e5e9f0{% endif %};background:{% if filtre == 'jour' %}#1a56db{% else %}white{% endif %};color:{% if filtre == 'jour' %}white{% else %}#8a94a6{% endif %}">Aujourd'hui</a>
+        <a href="?filtre=semaine" style="height:32px;padding:0 12px;border-radius:6px;font-size:11px;font-weight:500;text-decoration:none;display:flex;align-items:center;border:0.5px solid {% if filtre == 'semaine' %}#1a56db{% else %}#e5e9f0{% endif %};background:{% if filtre == 'semaine' %}#1a56db{% else %}white{% endif %};color:{% if filtre == 'semaine' %}white{% else %}#8a94a6{% endif %}">Semaine</a>
+        <a href="?filtre=mois" style="height:32px;padding:0 12px;border-radius:6px;font-size:11px;font-weight:500;text-decoration:none;display:flex;align-items:center;border:0.5px solid {% if filtre == 'mois' %}#1a56db{% else %}#e5e9f0{% endif %};background:{% if filtre == 'mois' %}#1a56db{% else %}white{% endif %};color:{% if filtre == 'mois' %}white{% else %}#8a94a6{% endif %}">Ce mois</a>
+        <a href="?filtre=annee" style="height:32px;padding:0 12px;border-radius:6px;font-size:11px;font-weight:500;text-decoration:none;display:flex;align-items:center;border:0.5px solid {% if filtre == 'annee' %}#1a56db{% else %}#e5e9f0{% endif %};background:{% if filtre == 'annee' %}#1a56db{% else %}white{% endif %};color:{% if filtre == 'annee' %}white{% else %}#8a94a6{% endif %}">Année</a>
+        <input type="date" name="date_custom" value="{{ date_custom }}"
+            style="height:32px;border:0.5px solid #e5e9f0;border-radius:6px;padding:0 8px;font-size:11px;outline:none">
+        <button type="submit" name="filtre" value="custom" style="height:32px;padding:0 10px;border:0.5px solid #e5e9f0;border-radius:6px;background:white;font-size:11px;cursor:pointer;color:#8a94a6">
+            <i class="fa-solid fa-filter"></i>
+        </button>
+    </form>
+    <a href="{% url 'nouvelle_vente' %}" style="height:36px;padding:0 14px;background:#1a56db;color:white;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;text-decoration:none">
+        <i class="fa-solid fa-plus"></i> Nouvelle vente
+    </a>
+</div>
+
+<!-- Table -->
+<div class="panel">
+    <div style="display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr 1fr 110px;padding:10px 16px;background:#f8fafc;border-bottom:0.5px solid #f0f2f7;font-size:10px;color:#8a94a6;text-transform:uppercase;letter-spacing:0.5px">
+        <div>N° Facture</div><div>Client</div><div>Montant</div><div>Payé</div><div>Statut</div><div>Actions</div>
+    </div>
+
+    {% for facture in factures %}
+    <div style="display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr 1fr 110px;padding:12px 16px;border-bottom:0.5px solid #f8fafc;align-items:center">
+        <div style="font-size:12px;font-weight:600;color:#1a56db">{{ facture.numero }}</div>
+        <div style="font-size:12px;color:{% if facture.client %}#1a1f2e{% else %}#8a94a6{% endif %}{% if not facture.client %};font-style:italic{% endif %}">
+            {{ facture.nom_client_affiche }}
+        </div>
+        <div style="font-size:12px;font-weight:500;color:#1a1f2e">{{ facture.montant_total|floatformat:0 }} FCFA</div>
+        <div style="font-size:12px;color:#8a94a6">{{ facture.montant_paye|floatformat:0 }} FCFA</div>
+        <div>
+            {% if facture.statut == 'payee' %}
+            <span style="background:#ecfdf5;color:#065f46;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500">Payée</span>
+            {% elif facture.statut == 'partielle' %}
+            <span style="background:#fffbeb;color:#92400e;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500">Partielle</span>
+            {% elif facture.statut == 'credit' %}
+            <span style="background:#fef2f2;color:#991b1b;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500">Crédit</span>
+            {% else %}
+            <span style="background:#fef2f2;color:#991b1b;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500">Impayée</span>
+            {% endif %}
+        </div>
+        <div style="display:flex;gap:4px">
+            <a href="{% url 'facture_detail' facture.id %}" style="width:28px;height:28px;border-radius:6px;border:0.5px solid #e5e9f0;background:white;display:flex;align-items:center;justify-content:center;color:#8a94a6;font-size:12px;text-decoration:none" title="Voir">
+                <i class="fa-solid fa-eye"></i>
+            </a>
+            <a href="{% url 'facture_pdf' facture.id %}" style="width:28px;height:28px;border-radius:6px;border:0.5px solid #e5e9f0;background:white;display:flex;align-items:center;justify-content:center;color:#8a94a6;font-size:12px;text-decoration:none" title="PDF" target="_blank">
+                <i class="fa-solid fa-file-pdf"></i>
+            </a>
+            {% if facture.statut != 'payee' %}
+            <a href="{% url 'enregistrer_paiement' facture.id %}" style="width:28px;height:28px;border-radius:6px;border:0.5px solid #bbf7d0;background:white;display:flex;align-items:center;justify-content:center;color:#0d9f6e;font-size:12px;text-decoration:none" title="Enregistrer paiement">
+                <i class="fa-solid fa-hand-holding-dollar"></i>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <div style="padding:32px;text-align:center;color:#8a94a6;font-size:13px">
+        <i class="fa-solid fa-receipt" style="font-size:24px;margin-bottom:8px;display:block;opacity:0.3"></i>
+        Aucune facture pour cette période
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
