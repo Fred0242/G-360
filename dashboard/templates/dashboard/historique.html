@@ -1,0 +1,120 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Historique — G-360{% endblock %}
+{% block page_icon %}fa-solid fa-clock-rotate-left{% endblock %}
+{% block page_title %}Historique{% endblock %}
+
+{% block content %}
+
+<!-- Stats -->
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
+    <div class="stat-card" style="display:flex;align-items:center;gap:12px;padding:12px 14px">
+        <div style="width:32px;height:32px;border-radius:8px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-solid fa-arrow-down" style="color:#0d9f6e;font-size:14px"></i>
+        </div>
+        <div>
+            <div style="font-size:18px;font-weight:700;color:#1a1f2e">{{ stats.total_entrees }}</div>
+            <div style="font-size:10px;color:#8a94a6">Entrées stock total</div>
+        </div>
+    </div>
+    <div class="stat-card" style="display:flex;align-items:center;gap:12px;padding:12px 14px">
+        <div style="width:32px;height:32px;border-radius:8px;background:#fef2f2;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-solid fa-arrow-up" style="color:#e53e3e;font-size:14px"></i>
+        </div>
+        <div>
+            <div style="font-size:18px;font-weight:700;color:#1a1f2e">{{ stats.total_sorties }}</div>
+            <div style="font-size:10px;color:#8a94a6">Sorties stock total</div>
+        </div>
+    </div>
+    <div class="stat-card" style="display:flex;align-items:center;gap:12px;padding:12px 14px">
+        <div style="width:32px;height:32px;border-radius:8px;background:#f0f4ff;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-solid fa-money-bill-wave" style="color:#1a56db;font-size:14px"></i>
+        </div>
+        <div>
+            <div style="font-size:18px;font-weight:700;color:#1a1f2e">{{ stats.total_paiements|floatformat:0 }}</div>
+            <div style="font-size:10px;color:#8a94a6">FCFA encaissés total</div>
+        </div>
+    </div>
+</div>
+
+<!-- Filtres -->
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:16px">
+    <a href="?filtre=jour&type={{ type_filtre }}" style="height:32px;padding:0 12px;border-radius:6px;font-size:11px;font-weight:500;text-decoration:none;display:flex;align-items:center;border:0.5px solid {% if filtre == 'jour' %}#1a56db{% else %}#e5e9f0{% endif %};background:{% if filtre == 'jour' %}#1a56db{% else %}white{% endif %};color:{% if filtre == 'jour' %}white{% else %}#8a94a6{% endif %}">Aujourd'hui</a>
+    <a href="?filtre=semaine&type={{ type_filtre }}" style="height:32px;padding:0 12px;border-radius:6px;font-size:11px;font-weight:500;text-decoration:none;display:flex;align-items:center;border:0.5px solid {% if filtre == 'semaine' %}#1a56db{% else %}#e5e9f0{% endif %};background:{% if filtre == 'semaine' %}#1a56db{% else %}white{% endif %};color:{% if filtre == 'semaine' %}white{% else %}#8a94a6{% endif %}">Semaine</a>
+    <a href="?filtre=mois&type={{ type_filtre }}" style="height:32px;padding:0 12px;border-radius:6px;font-size:11px;font-weight:500;text-decoration:none;display:flex;align-items:center;border:0.5px solid {% if filtre == 'mois' %}#1a56db{% else %}#e5e9f0{% endif %};background:{% if filtre == 'mois' %}#1a56db{% else %}white{% endif %};color:{% if filtre == 'mois' %}white{% else %}#8a94a6{% endif %}">Ce mois</a>
+    <a href="?filtre=annee&type={{ type_filtre }}" style="height:32px;padding:0 12px;border-radius:6px;font-size:11px;font-weight:500;text-decoration:none;display:flex;align-items:center;border:0.5px solid {% if filtre == 'annee' %}#1a56db{% else %}#e5e9f0{% endif %};background:{% if filtre == 'annee' %}#1a56db{% else %}white{% endif %};color:{% if filtre == 'annee' %}white{% else %}#8a94a6{% endif %}">Année</a>
+    <div style="width:1px;height:20px;background:#e5e9f0;margin:0 4px"></div>
+    <a href="?filtre={{ filtre }}&type=tous" style="height:32px;padding:0 12px;border-radius:6px;font-size:11px;font-weight:500;text-decoration:none;display:flex;align-items:center;border:0.5px solid {% if type_filtre == 'tous' %}#1a56db{% else %}#e5e9f0{% endif %};background:{% if type_filtre == 'tous' %}#1a56db{% else %}white{% endif %};color:{% if type_filtre == 'tous' %}white{% else %}#8a94a6{% endif %}">Tous</a>
+    <a href="?filtre={{ filtre }}&type=entree" style="height:32px;padding:0 12px;border-radius:6px;font-size:11px;font-weight:500;text-decoration:none;display:flex;align-items:center;border:0.5px solid {% if type_filtre == 'entree' %}#0d9f6e{% else %}#e5e9f0{% endif %};background:{% if type_filtre == 'entree' %}#0d9f6e{% else %}white{% endif %};color:{% if type_filtre == 'entree' %}white{% else %}#8a94a6{% endif %}">Entrées</a>
+    <a href="?filtre={{ filtre }}&type=sortie" style="height:32px;padding:0 12px;border-radius:6px;font-size:11px;font-weight:500;text-decoration:none;display:flex;align-items:center;border:0.5px solid {% if type_filtre == 'sortie' %}#e53e3e{% else %}#e5e9f0{% endif %};background:{% if type_filtre == 'sortie' %}#e53e3e{% else %}white{% endif %};color:{% if type_filtre == 'sortie' %}white{% else %}#8a94a6{% endif %}">Sorties</a>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+
+    <!-- Mouvements stock -->
+    <div class="panel">
+        <div style="padding:12px 16px;border-bottom:0.5px solid #f0f2f7;font-size:13px;font-weight:600;color:#1a1f2e;display:flex;align-items:center;gap:6px">
+            <i class="fa-solid fa-boxes-stacked" style="color:#1a56db;font-size:13px"></i>
+            Mouvements de stock
+        </div>
+        {% for m in mouvements %}
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:0.5px solid #f8fafc">
+            <div style="display:flex;align-items:center;gap:8px">
+                <div style="width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+                    background:{% if m.type_mouvement == 'entree' %}#f0fdf4{% elif m.type_mouvement == 'sortie' %}#fef2f2{% else %}#f0f4ff{% endif %}">
+                    <i class="fa-solid {% if m.type_mouvement == 'entree' %}fa-arrow-down{% elif m.type_mouvement == 'sortie' %}fa-arrow-up{% else %}fa-sliders{% endif %}"
+                        style="font-size:11px;color:{% if m.type_mouvement == 'entree' %}#0d9f6e{% elif m.type_mouvement == 'sortie' %}#e53e3e{% else %}#1a56db{% endif %}"></i>
+                </div>
+                <div>
+                    <div style="font-size:12px;font-weight:500;color:#1a1f2e">{{ m.produit.nom }}</div>
+                    <div style="font-size:10px;color:#8a94a6">{{ m.motif|default:"—" }} · {{ m.date_mouvement|date:"d M Y" }}</div>
+                </div>
+            </div>
+            <div style="text-align:right">
+                <div style="font-size:12px;font-weight:600;color:{% if m.type_mouvement == 'entree' %}#0d9f6e{% elif m.type_mouvement == 'sortie' %}#e53e3e{% else %}#1a56db{% endif %}">
+                    {% if m.type_mouvement == 'entree' %}+{% elif m.type_mouvement == 'sortie' %}-{% endif %}{{ m.quantite }}
+                </div>
+                <div style="font-size:10px;color:#8a94a6">Stock: {{ m.quantite_apres }}</div>
+            </div>
+        </div>
+        {% empty %}
+        <div style="padding:24px;text-align:center;color:#8a94a6;font-size:12px">
+            <i class="fa-solid fa-boxes-stacked" style="font-size:20px;margin-bottom:6px;display:block;opacity:0.3"></i>
+            Aucun mouvement
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Paiements -->
+    <div class="panel">
+        <div style="padding:12px 16px;border-bottom:0.5px solid #f0f2f7;font-size:13px;font-weight:600;color:#1a1f2e;display:flex;align-items:center;gap:6px">
+            <i class="fa-solid fa-hand-holding-dollar" style="color:#0d9f6e;font-size:13px"></i>
+            Paiements reçus
+        </div>
+        {% for p in paiements %}
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:0.5px solid #f8fafc">
+            <div style="display:flex;align-items:center;gap:8px">
+                <div style="width:28px;height:28px;border-radius:6px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                    <i class="fa-solid {% if p.mode_paiement == 'cash' %}fa-money-bill{% elif p.mode_paiement == 'wave' %}fa-mobile{% else %}fa-phone{% endif %}"
+                        style="font-size:11px;color:#0d9f6e"></i>
+                </div>
+                <div>
+                    <div style="font-size:12px;font-weight:500;color:#1a1f2e">{{ p.facture.nom_client_affiche }}</div>
+                    <div style="font-size:10px;color:#8a94a6">{{ p.facture.numero }} · {{ p.date_paiement|date:"d M Y" }}</div>
+                </div>
+            </div>
+            <div style="text-align:right">
+                <div style="font-size:12px;font-weight:600;color:#0d9f6e">+{{ p.montant|floatformat:0 }} FCFA</div>
+                <div style="font-size:10px;color:#8a94a6">{{ p.get_mode_paiement_display }}</div>
+            </div>
+        </div>
+        {% empty %}
+        <div style="padding:24px;text-align:center;color:#8a94a6;font-size:12px">
+            <i class="fa-solid fa-hand-holding-dollar" style="font-size:20px;margin-bottom:6px;display:block;opacity:0.3"></i>
+            Aucun paiement
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
