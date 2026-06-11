@@ -1,0 +1,260 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
+
+msgid "Gestion commerciale"
+msgstr "Gestione commerciale"
+
+msgid "Tableau de bord"
+msgstr "Pannello di controllo"
+
+msgid "Stock"
+msgstr "Magazzino"
+
+msgid "Ventes & Factures"
+msgstr "Vendite & Fatture"
+
+msgid "Clients"
+msgstr "Clienti"
+
+msgid "Historique"
+msgstr "Cronologia"
+
+msgid "Support"
+msgstr "Supporto"
+
+msgid "Administrateur"
+msgstr "Amministratore"
+
+msgid "Ajouter un produit"
+msgstr "Aggiungi prodotto"
+
+msgid "Nouvelle vente"
+msgstr "Nuova vendita"
+
+msgid "Ajouter un client"
+msgstr "Aggiungi cliente"
+
+msgid "Clients avec dettes"
+msgstr "Clienti con debiti"
+
+msgid "Top produits — ce mois"
+msgstr "Prodotti top — questo mese"
+
+msgid "Dernières factures"
+msgstr "Ultime fatture"
+
+msgid "Voir tout"
+msgstr "Vedi tutto"
+
+msgid "Aucune dette en cours"
+msgstr "Nessun debito in corso"
+
+msgid "Aucune vente ce mois"
+msgstr "Nessuna vendita questo mese"
+
+msgid "Aucune facture enregistrée"
+msgstr "Nessuna fattura registrata"
+
+msgid "Gestion du Stock"
+msgstr "Gestione Magazzino"
+
+msgid "Total produits"
+msgstr "Totale prodotti"
+
+msgid "En stock"
+msgstr "In magazzino"
+
+msgid "Stock faible"
+msgstr "Scorte basse"
+
+msgid "Rupture"
+msgstr "Esaurito"
+
+msgid "Rechercher un produit..."
+msgstr "Cerca prodotto..."
+
+msgid "Toutes catégories"
+msgstr "Tutte le categorie"
+
+msgid "Tous les stocks"
+msgstr "Tutti i magazzini"
+
+msgid "Produit"
+msgstr "Prodotto"
+
+msgid "Catégorie"
+msgstr "Categoria"
+
+msgid "Prix vente"
+msgstr "Prezzo vendita"
+
+msgid "Prix achat"
+msgstr "Prezzo acquisto"
+
+msgid "Actions"
+msgstr "Azioni"
+
+msgid "Aucun produit trouvé"
+msgstr "Nessun prodotto trovato"
+
+msgid "Modifier"
+msgstr "Modifica"
+
+msgid "Annuler"
+msgstr "Annulla"
+
+msgid "Supprimer"
+msgstr "Elimina"
+
+msgid "Gestion des Clients"
+msgstr "Gestione Clienti"
+
+msgid "Total clients"
+msgstr "Totale clienti"
+
+msgid "FCFA total dettes"
+msgstr "FCFA totale debiti"
+
+msgid "Tous les clients"
+msgstr "Tutti i clienti"
+
+msgid "Avec dettes"
+msgstr "Con debiti"
+
+msgid "Rechercher par nom ou téléphone..."
+msgstr "Cerca per nome o telefono..."
+
+msgid "Téléphone"
+msgstr "Telefono"
+
+msgid "Inscription"
+msgstr "Iscrizione"
+
+msgid "Solde dette"
+msgstr "Saldo debito"
+
+msgid "Soldé"
+msgstr "Saldato"
+
+msgid "Aucun client trouvé"
+msgstr "Nessun cliente trovato"
+
+msgid "Factures période"
+msgstr "Fatture periodo"
+
+msgid "FCFA encaissés"
+msgstr "FCFA incassati"
+
+msgid "FCFA en attente"
+msgstr "FCFA in attesa"
+
+msgid "Top produit"
+msgstr "Prodotto top"
+
+msgid "Aujourd'hui"
+msgstr "Oggi"
+
+msgid "Semaine"
+msgstr "Settimana"
+
+msgid "Ce mois"
+msgstr "Questo mese"
+
+msgid "Année"
+msgstr "Anno"
+
+msgid "Aucune facture pour cette période"
+msgstr "Nessuna fattura per questo periodo"
+
+msgid "N° Facture"
+msgstr "N° Fattura"
+
+msgid "Client"
+msgstr "Cliente"
+
+msgid "Montant"
+msgstr "Importo"
+
+msgid "Payé"
+msgstr "Pagato"
+
+msgid "Statut"
+msgstr "Stato"
+
+msgid "Payée"
+msgstr "Pagata"
+
+msgid "Partielle"
+msgstr "Parziale"
+
+msgid "Crédit"
+msgstr "Credito"
+
+msgid "Impayée"
+msgstr "Non pagata"
+
+msgid "Entrées stock total"
+msgstr "Entrate magazzino totali"
+
+msgid "Sorties stock total"
+msgstr "Uscite magazzino totali"
+
+msgid "FCFA encaissés total"
+msgstr "FCFA incassati totali"
+
+msgid "Mouvements de stock"
+msgstr "Movimenti magazzino"
+
+msgid "Paiements reçus"
+msgstr "Pagamenti ricevuti"
+
+msgid "Aucun mouvement"
+msgstr "Nessun movimento"
+
+msgid "Aucun paiement"
+msgstr "Nessun pagamento"
+
+msgid "Se connecter"
+msgstr "Accedi"
+
+msgid "Bienvenue"
+msgstr "Benvenuto"
+
+msgid "Nom d'utilisateur"
+msgstr "Nome utente"
+
+msgid "Mot de passe"
+msgstr "Password"
+
+msgid "Gérez votre boutique à 360°"
+msgstr "Gestisci il tuo negozio a 360°"
+
+msgid "Stock · Ventes · Clients · Factures · Dettes"
+msgstr "Magazzino · Vendite · Clienti · Fatture · Debiti"
+
+msgid "Gestion du stock"
+msgstr "Gestione magazzino"
+
+msgid "Suivez vos entrées et sorties en temps réel"
+msgstr "Monitora entrate e uscite in tempo reale"
+
+msgid "Factures PDF"
+msgstr "Fatture PDF"
+
+msgid "Générez et partagez vos factures facilement"
+msgstr "Genera e condividi le tue fatture facilmente"
+
+msgid "Suivi des dettes"
+msgstr "Monitoraggio debiti"
+
+msgid "Visualisez les crédits clients non réglés"
+msgstr "Visualizza i crediti clienti non saldati"
+
+msgid "Statistiques"
+msgstr "Statistiche"
+
+msgid "Analysez vos ventes par jour, mois ou année"
+msgstr "Analizza le vendite per giorno, mese o anno"

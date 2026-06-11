@@ -1,0 +1,53 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+
+msgid "Tableau de bord"
+msgstr "Tableau de bord"
+
+msgid "Stock"
+msgstr "Stock"
+
+msgid "Ventes & Factures"
+msgstr "Ventes & Factures"
+
+msgid "Clients"
+msgstr "Clients"
+
+msgid "Historique"
+msgstr "Historique"
+
+msgid "Support"
+msgstr "Support"
+
+msgid "Gestion commerciale"
+msgstr "Gestion commerciale"
+
+msgid "Ajouter un produit"
+msgstr "Ajouter un produit"
+
+msgid "Nouvelle vente"
+msgstr "Nouvelle vente"
+
+msgid "Ajouter un client"
+msgstr "Ajouter un client"
+
+msgid "Clients avec dettes"
+msgstr "Clients avec dettes"
+
+msgid "Top produits vendus"
+msgstr "Top produits vendus"
+
+msgid "Dernières factures"
+msgstr "Dernières factures"
+
+msgid "Se connecter"
+msgstr "Se connecter"
+
+msgid "Nom d'utilisateur"
+msgstr "Nom d'utilisateur"
+
+msgid "Mot de passe"
+msgstr "Mot de passe"

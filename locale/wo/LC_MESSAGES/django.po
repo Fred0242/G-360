@@ -1,0 +1,260 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: wo\n"
+
+msgid "Gestion commerciale"
+msgstr "Liggéey bu Ndaw"
+
+msgid "Tableau de bord"
+msgstr "Seen Doxalin"
+
+msgid "Stock"
+msgstr "Njëkk bu Njeeb"
+
+msgid "Ventes & Factures"
+msgstr "Jaay ak Faxtu"
+
+msgid "Clients"
+msgstr "Jëfandikukat yi"
+
+msgid "Historique"
+msgstr "Doxalin bu Yàgg"
+
+msgid "Support"
+msgstr "Ndimbal"
+
+msgid "Administrateur"
+msgstr "Boroom"
+
+msgid "Ajouter un produit"
+msgstr "Yokk Njëkk"
+
+msgid "Nouvelle vente"
+msgstr "Jaay bu Bees"
+
+msgid "Ajouter un client"
+msgstr "Yokk Jëfandikukat"
+
+msgid "Clients avec dettes"
+msgstr "Jëfandikukat yu Am Àll"
+
+msgid "Top produits — ce mois"
+msgstr "Njëkk yu Bari Jaay bi"
+
+msgid "Dernières factures"
+msgstr "Faxtu yu Mujj"
+
+msgid "Voir tout"
+msgstr "Xool lépp"
+
+msgid "Aucune dette en cours"
+msgstr "Amul Àll"
+
+msgid "Aucune vente ce mois"
+msgstr "Jaayuñu dara bi wër bi"
+
+msgid "Aucune facture enregistrée"
+msgstr "Faxtu amul"
+
+msgid "Gestion du Stock"
+msgstr "Liggéey Njëkk"
+
+msgid "Total produits"
+msgstr "Njëkk yépp"
+
+msgid "En stock"
+msgstr "Am na"
+
+msgid "Stock faible"
+msgstr "Njëkk nëbb"
+
+msgid "Rupture"
+msgstr "Njëkk weesu"
+
+msgid "Rechercher un produit..."
+msgstr "Seet Njëkk..."
+
+msgid "Toutes catégories"
+msgstr "Wàll yépp"
+
+msgid "Tous les stocks"
+msgstr "Njëkk yépp bu dëkk"
+
+msgid "Produit"
+msgstr "Njëkk"
+
+msgid "Catégorie"
+msgstr "Wàll"
+
+msgid "Prix vente"
+msgstr "Jaay ak Xaalis"
+
+msgid "Prix achat"
+msgstr "Samp ak Xaalis"
+
+msgid "Actions"
+msgstr "Liggéey"
+
+msgid "Aucun produit trouvé"
+msgstr "Amul Njëkk"
+
+msgid "Modifier"
+msgstr "Soppiku"
+
+msgid "Annuler"
+msgstr "Dëgg"
+
+msgid "Supprimer"
+msgstr "Fey"
+
+msgid "Gestion des Clients"
+msgstr "Liggéey Jëfandikukat yi"
+
+msgid "Total clients"
+msgstr "Jëfandikukat yépp"
+
+msgid "FCFA total dettes"
+msgstr "FCFA Àll yépp"
+
+msgid "Tous les clients"
+msgstr "Jëfandikukat yépp bu dëkk"
+
+msgid "Avec dettes"
+msgstr "Yu Am Àll"
+
+msgid "Rechercher par nom ou téléphone..."
+msgstr "Seet ak turu doom..."
+
+msgid "Téléphone"
+msgstr "Telefon"
+
+msgid "Inscription"
+msgstr "Dugël"
+
+msgid "Solde dette"
+msgstr "Àll bi"
+
+msgid "Soldé"
+msgstr "Fey na"
+
+msgid "Aucun client trouvé"
+msgstr "Amul Jëfandikukat"
+
+msgid "Factures période"
+msgstr "Faxtu yi"
+
+msgid "FCFA encaissés"
+msgstr "FCFA Jël na"
+
+msgid "FCFA en attente"
+msgstr "FCFA Mana"
+
+msgid "Top produit"
+msgstr "Njëkk bu Bari"
+
+msgid "Aujourd'hui"
+msgstr "Tey"
+
+msgid "Semaine"
+msgstr "Ayu-bés bi"
+
+msgid "Ce mois"
+msgstr "Weer bi"
+
+msgid "Année"
+msgstr "At bi"
+
+msgid "Aucune facture pour cette période"
+msgstr "Faxtu amul bi"
+
+msgid "N° Facture"
+msgstr "Nomb. Faxtu"
+
+msgid "Client"
+msgstr "Jëfandikukat"
+
+msgid "Montant"
+msgstr "Xaalis"
+
+msgid "Payé"
+msgstr "Fey na"
+
+msgid "Statut"
+msgstr "Xam-xam"
+
+msgid "Payée"
+msgstr "Fey na bu set"
+
+msgid "Partielle"
+msgstr "Tëj ci kanam"
+
+msgid "Crédit"
+msgstr "Àll"
+
+msgid "Impayée"
+msgstr "Feyul"
+
+msgid "Entrées stock total"
+msgstr "Njëkk Dugg yépp"
+
+msgid "Sorties stock total"
+msgstr "Njëkk Génn yépp"
+
+msgid "FCFA encaissés total"
+msgstr "FCFA Jël yépp"
+
+msgid "Mouvements de stock"
+msgstr "Njëkk yi Dox"
+
+msgid "Paiements reçus"
+msgstr "Xaalis Jël"
+
+msgid "Aucun mouvement"
+msgstr "Doxalinu dara"
+
+msgid "Aucun paiement"
+msgstr "Feyul dara"
+
+msgid "Se connecter"
+msgstr "Dugg"
+
+msgid "Bienvenue"
+msgstr "Dalal Jam"
+
+msgid "Nom d'utilisateur"
+msgstr "Yor wi"
+
+msgid "Mot de passe"
+msgstr "Dëgg-dëgg wi"
+
+msgid "Gérez votre boutique à 360°"
+msgstr "Liggéeyal sa Butik ci 360°"
+
+msgid "Stock · Ventes · Clients · Factures · Dettes"
+msgstr "Njëkk · Jaay · Jëfandikukat · Faxtu · Àll"
+
+msgid "Gestion du stock"
+msgstr "Liggéey Njëkk bi"
+
+msgid "Suivez vos entrées et sorties en temps réel"
+msgstr "Xool sa Njëkk ak Génn"
+
+msgid "Factures PDF"
+msgstr "Faxtu PDF"
+
+msgid "Générez et partagez vos factures facilement"
+msgstr "Def ak Yëgël Faxtu yi"
+
+msgid "Suivi des dettes"
+msgstr "Xool Àll yi"
+
+msgid "Visualisez les crédits clients non réglés"
+msgstr "Xool Àll yu Feyul"
+
+msgid "Statistiques"
+msgstr "Xam-xam bu Njëkk"
+
+msgid "Analysez vos ventes par jour, mois ou année"
+msgstr "Xool sa Jaay ci bés, weer walla at"

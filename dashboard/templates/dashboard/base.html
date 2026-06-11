@@ -1,5 +1,6 @@
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,6 @@
         body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; }
 
         /* Sidebar */
-       
         .sidebar { width: 200px; background: #0f1923; min-height: 100vh; }
         .s-logo { padding: 20px 16px; border-bottom: 0.5px solid rgba(255,255,255,0.06); margin-bottom: 12px; }
         .logo-mark { width: 44px; height: 44px; background: #1a56db; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; color: white; margin-bottom: 10px; }
@@ -42,48 +42,47 @@
         /* Topbar */
         .topbar { background: white; height: 52px; border-bottom: 0.5px solid #e5e9f0; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
         .lang-pill { display: flex; background: #f4f6f9; border-radius: 6px; padding: 2px; border: 0.5px solid #e5e9f0; }
-        .lang-btn { font-size: 10px; padding: 3px 8px; border-radius: 4px; color: #8a94a6; cursor: pointer; font-weight: 500; text-decoration: none; }
+        .lang-btn { font-size: 10px; padding: 3px 8px; border-radius: 4px; color: #8a94a6; cursor: pointer; font-weight: 500; background: none; border: none; }
         .lang-btn.active { background: white; color: #1a56db; border: 0.5px solid #e5e9f0; }
     </style>
 </head>
 <body>
 <div class="flex min-h-screen">
 
-    <!-- Sidebar iconique -->
-    
+    <!-- Sidebar -->
     <aside class="sidebar fixed top-0 left-0 h-screen flex flex-col z-20">
 
         <div class="s-logo">
-           <div class="logo-mark">
+            <div class="logo-mark">
                 <i class="fa-solid fa-store" style="font-size:18px"></i>
             </div>
             <div class="logo-name">G-360</div>
-            <div class="logo-sub">Gestion commerciale</div>
+            <div class="logo-sub">{% trans "Gestion commerciale" %}</div>
         </div>
 
         <div class="s-section">Principal</div>
 
         <a href="{% url 'dashboard' %}" class="s-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
-            <i class="fa-solid fa-gauge-high"></i> Tableau de bord
+            <i class="fa-solid fa-gauge-high"></i> {% trans "Tableau de bord" %}
         </a>
         <a href="{% url 'stock' %}" class="s-item {% if request.resolver_match.url_name == 'stock' %}active{% endif %}">
-            <i class="fa-solid fa-boxes-stacked"></i> Stock
+            <i class="fa-solid fa-boxes-stacked"></i> {% trans "Stock" %}
         </a>
         <a href="{% url 'ventes' %}" class="s-item {% if request.resolver_match.url_name == 'ventes' %}active{% endif %}">
-            <i class="fa-solid fa-receipt"></i> Ventes & Factures
+            <i class="fa-solid fa-receipt"></i> {% trans "Ventes & Factures" %}
         </a>
         <a href="{% url 'clients_liste' %}" class="s-item {% if request.resolver_match.url_name == 'clients_liste' %}active{% endif %}">
-            <i class="fa-solid fa-users"></i> Clients
+            <i class="fa-solid fa-users"></i> {% trans "Clients" %}
         </a>
 
         <div style="width:calc(100% - 32px);height:0.5px;background:rgba(255,255,255,0.07);margin:8px 16px"></div>
         <div class="s-section">Autre</div>
 
         <a href="{% url 'historique' %}" class="s-item {% if request.resolver_match.url_name == 'historique' %}active{% endif %}">
-            <i class="fa-solid fa-clock-rotate-left"></i> Historique
+            <i class="fa-solid fa-clock-rotate-left"></i> {% trans "Historique" %}
         </a>
         <a href="{% url 'support' %}" class="s-item {% if request.resolver_match.url_name == 'support' %}active{% endif %}">
-            <i class="fa-solid fa-headset"></i> Support
+            <i class="fa-solid fa-headset"></i> {% trans "Support" %}
         </a>
 
         <div class="mt-auto s-user">
@@ -104,18 +103,26 @@
             <div class="flex items-center gap-3">
                 <span style="font-size:13px;font-weight:600;color:#1a1f2e;display:flex;align-items:center;gap:8px">
                     <i class="{% block page_icon %}fa-solid fa-gauge-high{% endblock %}" style="color:#1a56db;font-size:14px"></i>
-                    {% block page_title %}Tableau de bord{% endblock %}
+                    {% block page_title %}{% trans "Tableau de bord" %}{% endblock %}
                 </span>
                 <span style="color:#e5e9f0">|</span>
                 <span style="font-size:11px;color:#8a94a6">{{ today }}</span>
             </div>
             <div class="flex items-center gap-3">
-                <div class="lang-pill">
-                    <a href="?lang=fr" class="lang-btn {% if LANGUAGE_CODE == 'fr' %}active{% endif %}">FR</a>
-                    <a href="?lang=wo" class="lang-btn">WO</a>
-                    <a href="?lang=it" class="lang-btn">IT</a>
-                </div>
-                <div style="width:28px;height:28px;border-radius:6px;background:#f4f6f9;border:0.5px solid #e5e9f0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#8a94a6;position:relative">
+                <!-- Sélecteur de langue -->
+                <form action="{% url 'set_language' %}" method="post" style="display:flex">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                    <div class="lang-pill">
+                        <button type="submit" name="language" value="fr"
+                            class="lang-btn {% if LANGUAGE_CODE == 'fr' %}active{% endif %}">FR</button>
+                        <button type="submit" name="language" value="wo"
+                            class="lang-btn {% if LANGUAGE_CODE == 'wo' %}active{% endif %}">WO</button>
+                        <button type="submit" name="language" value="it"
+                            class="lang-btn {% if LANGUAGE_CODE == 'it' %}active{% endif %}">IT</button>
+                    </div>
+                </form>
+                <div style="width:28px;height:28px;border-radius:6px;background:#f4f6f9;border:0.5px solid #e5e9f0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#8a94a6">
                     <i class="fa-regular fa-bell"></i>
                 </div>
                 <a href="{% url 'logout' %}" style="font-size:11px;color:#8a94a6;display:flex;align-items:center;gap:5px;text-decoration:none" title="Déconnexion">

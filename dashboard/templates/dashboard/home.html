@@ -1,61 +1,53 @@
 {% extends 'dashboard/base.html' %}
-{% block title %}Tableau de bord — G-360{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Tableau de bord" %} — G-360{% endblock %}
 
 {% block content %}
 
-<!-- Stat cards -->
 <div class="grid grid-cols-4 gap-4 mb-5">
-
     <div class="stat-card">
         <div style="width:36px;height:36px;border-radius:8px;background:#f0f4ff;display:flex;align-items:center;justify-content:center;margin-bottom:12px">
             <i class="fa-solid fa-users" style="color:#1a56db;font-size:15px"></i>
         </div>
-        <div style="font-size:11px;color:#8a94a6;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">Clients</div>
+        <div style="font-size:11px;color:#8a94a6;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">{% trans "Clients" %}</div>
         <div style="font-size:24px;font-weight:700;color:#1a1f2e;margin-bottom:2px">{{ stats.clients }}</div>
         <div style="font-size:11px;color:#8a94a6">enregistrés</div>
     </div>
-
     <div class="stat-card">
         <div style="width:36px;height:36px;border-radius:8px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;margin-bottom:12px">
             <i class="fa-solid fa-money-bill-wave" style="color:#0d9f6e;font-size:15px"></i>
         </div>
-        <div style="font-size:11px;color:#8a94a6;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">Ventes du mois</div>
+        <div style="font-size:11px;color:#8a94a6;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">{% trans "Ventes & Factures" %}</div>
         <div style="font-size:24px;font-weight:700;color:#1a1f2e;margin-bottom:2px">{{ stats.ventes_mois }}</div>
-        <div style="font-size:11px;color:#8a94a6">FCFA encaissés</div>
+        <div style="font-size:11px;color:#8a94a6">{% trans "FCFA encaissés" %}</div>
     </div>
-
     <div class="stat-card">
         <div style="width:36px;height:36px;border-radius:8px;background:#fffbeb;display:flex;align-items:center;justify-content:center;margin-bottom:12px">
             <i class="fa-solid fa-boxes-stacked" style="color:#d97706;font-size:15px"></i>
         </div>
-        <div style="font-size:11px;color:#8a94a6;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">Produits en stock</div>
+        <div style="font-size:11px;color:#8a94a6;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">{% trans "Stock" %}</div>
         <div style="font-size:24px;font-weight:700;color:#1a1f2e;margin-bottom:2px">{{ stats.produits }}</div>
         <div style="font-size:11px;color:#8a94a6">références actives</div>
     </div>
-
     <div class="stat-card">
         <div style="width:36px;height:36px;border-radius:8px;background:#fef2f2;display:flex;align-items:center;justify-content:center;margin-bottom:12px">
             <i class="fa-solid fa-triangle-exclamation" style="color:#e53e3e;font-size:15px"></i>
         </div>
-        <div style="font-size:11px;color:#8a94a6;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">Dettes clients</div>
+        <div style="font-size:11px;color:#8a94a6;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">{% trans "Clients avec dettes" %}</div>
         <div style="font-size:24px;font-weight:700;color:#1a1f2e;margin-bottom:2px">{{ stats.dettes_total }}</div>
-        <div style="font-size:11px;color:#8a94a6">FCFA en attente</div>
+        <div style="font-size:11px;color:#8a94a6">{% trans "FCFA en attente" %}</div>
     </div>
-
 </div>
 
-<!-- Panels principaux -->
 <div class="grid grid-cols-2 gap-4 mb-4">
-
-    <!-- Clients avec dettes -->
     <div class="panel">
         <div style="padding:12px 16px;border-bottom:0.5px solid #f0f2f7;display:flex;align-items:center;justify-content:space-between">
             <span style="font-size:13px;font-weight:600;color:#1a1f2e;display:flex;align-items:center;gap:6px">
                 <i class="fa-solid fa-triangle-exclamation" style="color:#e53e3e;font-size:13px"></i>
-                Clients avec dettes
+                {% trans "Clients avec dettes" %}
             </span>
             <a href="{% url 'clients_liste' %}?vue=dettes" style="font-size:11px;color:#1a56db;text-decoration:none">
-                Voir tout <i class="fa-solid fa-arrow-right fa-xs"></i>
+                {% trans "Voir tout" %} <i class="fa-solid fa-arrow-right fa-xs"></i>
             </a>
         </div>
         {% for client in clients_en_dette %}
@@ -76,20 +68,19 @@
         {% empty %}
         <div style="padding:20px;text-align:center;color:#8a94a6;font-size:12px">
             <i class="fa-solid fa-circle-check" style="color:#0d9f6e;font-size:18px;display:block;margin-bottom:6px"></i>
-            Aucune dette en cours
+            {% trans "Aucune dette en cours" %}
         </div>
         {% endfor %}
     </div>
 
-    <!-- Top produits -->
     <div class="panel">
         <div style="padding:12px 16px;border-bottom:0.5px solid #f0f2f7;display:flex;align-items:center;justify-content:space-between">
             <span style="font-size:13px;font-weight:600;color:#1a1f2e;display:flex;align-items:center;gap:6px">
                 <i class="fa-solid fa-star" style="color:#d97706;font-size:13px"></i>
-                Top produits — ce mois
+                {% trans "Top produits — ce mois" %}
             </span>
             <a href="{% url 'ventes' %}" style="font-size:11px;color:#1a56db;text-decoration:none">
-                Voir tout <i class="fa-solid fa-arrow-right fa-xs"></i>
+                {% trans "Voir tout" %} <i class="fa-solid fa-arrow-right fa-xs"></i>
             </a>
         </div>
         {% for produit in top_produits %}
@@ -105,26 +96,28 @@
         {% empty %}
         <div style="padding:20px;text-align:center;color:#8a94a6;font-size:12px">
             <i class="fa-solid fa-chart-bar" style="font-size:18px;display:block;margin-bottom:6px;opacity:0.3"></i>
-            Aucune vente ce mois
+            {% trans "Aucune vente ce mois" %}
         </div>
         {% endfor %}
     </div>
-
 </div>
 
-<!-- Dernières factures -->
 <div class="panel">
     <div style="padding:12px 16px;border-bottom:0.5px solid #f0f2f7;display:flex;align-items:center;justify-content:space-between">
         <span style="font-size:13px;font-weight:600;color:#1a1f2e;display:flex;align-items:center;gap:6px">
             <i class="fa-solid fa-clock-rotate-left" style="color:#1a56db;font-size:13px"></i>
-            Dernières factures
+            {% trans "Dernières factures" %}
         </span>
         <a href="{% url 'ventes' %}" style="font-size:11px;color:#1a56db;text-decoration:none">
-            Voir tout <i class="fa-solid fa-arrow-right fa-xs"></i>
+            {% trans "Voir tout" %} <i class="fa-solid fa-arrow-right fa-xs"></i>
         </a>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr 1fr;padding:8px 16px;background:#f8fafc;font-size:10px;color:#8a94a6;text-transform:uppercase;letter-spacing:0.5px;border-bottom:0.5px solid #f0f2f7">
-        <div>N° Facture</div><div>Client</div><div>Montant</div><div>Date</div><div>Statut</div>
+        <div>{% trans "N° Facture" %}</div>
+        <div>{% trans "Client" %}</div>
+        <div>{% trans "Montant" %}</div>
+        <div>Date</div>
+        <div>{% trans "Statut" %}</div>
     </div>
     {% for facture in dernieres_factures %}
     <div style="display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr 1fr;padding:11px 16px;border-bottom:0.5px solid #f8fafc;align-items:center">
@@ -136,20 +129,20 @@
         <div style="font-size:12px;color:#8a94a6">{{ facture.date_emission|date:"d M Y" }}</div>
         <div>
             {% if facture.statut == 'payee' %}
-            <span style="background:#ecfdf5;color:#065f46;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500">Payée</span>
+            <span style="background:#ecfdf5;color:#065f46;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500">{% trans "Payée" %}</span>
             {% elif facture.statut == 'partielle' %}
-            <span style="background:#fffbeb;color:#92400e;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500">Partielle</span>
+            <span style="background:#fffbeb;color:#92400e;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500">{% trans "Partielle" %}</span>
             {% elif facture.statut == 'credit' %}
-            <span style="background:#fef2f2;color:#991b1b;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500">Crédit</span>
+            <span style="background:#fef2f2;color:#991b1b;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500">{% trans "Crédit" %}</span>
             {% else %}
-            <span style="background:#fef2f2;color:#991b1b;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500">Impayée</span>
+            <span style="background:#fef2f2;color:#991b1b;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500">{% trans "Impayée" %}</span>
             {% endif %}
         </div>
     </div>
     {% empty %}
     <div style="padding:24px;text-align:center;color:#8a94a6;font-size:13px">
         <i class="fa-solid fa-receipt" style="font-size:20px;margin-bottom:6px;display:block;opacity:0.3"></i>
-        Aucune facture enregistrée
+        {% trans "Aucune facture enregistrée" %}
     </div>
     {% endfor %}
 </div>
